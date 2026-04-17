@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ImageKit — Free Online Image Tools</title>
+  <meta name="description" content="Free online image tools: resize images, create passport photos, compress images, and convert images to PDF. No login required. Works entirely in your browser." />
+  <meta name="keywords" content="image resize, passport photo, compress image, images to pdf, free image converter" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <a href="#home" class="nav-logo" id="logo-link">
+        <span class="logo-icon">⚡</span>
+        <span class="logo-text">Image<span class="logo-accent">Kit</span></span>
+      </a>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="#home" class="nav-link active" data-tab="home">Home</a></li>
+        <li><a href="#resize" class="nav-link" data-tab="resize">Resize</a></li>
+        <li><a href="#passport" class="nav-link" data-tab="passport">Passport</a></li>
+        <li><a href="#compress" class="nav-link" data-tab="compress">Compress</a></li>
+        <li><a href="#pdf" class="nav-link" data-tab="pdf">To PDF</a></li>
+      </ul>
+      <button class="nav-hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ===== MAIN APP ===== -->
+  <main class="main-content">
+
+    <!-- ====== HOME TAB ====== -->
+    <section class="tab-section active" id="tab-home">
+      <div class="hero">
+        <div class="hero-badge">✨ 100% Free &amp; Private</div>
+        <h1 class="hero-title">
+          Powerful Image Tools,<br />
+          <span class="gradient-text">Right in Your Browser</span>
+        </h1>
+        <p class="hero-subtitle">
+          Resize, compress, create passport photos, and convert images to PDF — all for free. No uploads to any server. Your images never leave your device.
+        </p>
+        <div class="hero-pills">
+          <span class="pill">🔒 No Login</span>
+          <span class="pill">🌐 Works Offline</span>
+          <span class="pill">⚡ Instant</span>
+          <span class="pill">📱 Mobile Friendly</span>
+        </div>
+      </div>
+
+      <div class="tool-cards" id="tool-cards">
+        <button class="tool-card" id="card-resize" data-tab="resize">
+          <div class="tool-card-icon">↔️</div>
+          <h2 class="tool-card-title">Resize Image</h2>
+          <p class="tool-card-desc">Set exact pixel dimensions or scale by percentage. Lock aspect ratio to avoid distortion.</p>
+          <span class="tool-card-cta">Start Resizing →</span>
+        </button>
+
+        <button class="tool-card card-accent-2" id="card-passport" data-tab="passport">
+          <div class="tool-card-icon">🪪</div>
+          <h2 class="tool-card-title">Passport Photo</h2>
+          <p class="tool-card-desc">Create standard passport photos for US, UK, EU, Pakistan and more. Get a print-ready sheet.</p>
+          <span class="tool-card-cta">Make Photo →</span>
+        </button>
+
+        <button class="tool-card card-accent-3" id="card-compress" data-tab="compress">
+          <div class="tool-card-icon">📦</div>
+          <h2 class="tool-card-title">Compress Image</h2>
+          <p class="tool-card-desc">Reduce file size smartly without visible quality loss. Upload multiple — get a ZIP.</p>
+          <span class="tool-card-cta">Compress Now →</span>
+        </button>
+
+        <button class="tool-card card-accent-4" id="card-pdf" data-tab="pdf">
+          <div class="tool-card-icon">📄</div>
+          <h2 class="tool-card-title">Images to PDF</h2>
+          <p class="tool-card-desc">Combine multiple images into a single PDF. Choose page size, drag to reorder pages.</p>
+          <span class="tool-card-cta">Create PDF →</span>
+        </button>
+      </div>
+
+      <div class="home-footer-note">
+        <p>🔐 <strong>Privacy first:</strong> All processing happens in your browser. No image is ever uploaded to any server.</p>
+      </div>
+    </section>
+
+    <!-- ====== RESIZE TAB ====== -->
+    <section class="tab-section" id="tab-resize">
+      <div class="tool-header">
+        <button class="back-btn" data-tab="home">← Back</button>
+        <h1 class="tool-title">↔️ Resize Image</h1>
+        <p class="tool-subtitle">Set exact pixel dimensions. Optionally lock aspect ratio.</p>
+      </div>
+
+      <div class="tool-body">
+        <div class="upload-zone" id="resize-upload-zone" role="button" tabindex="0" aria-label="Upload image to resize">
+          <div class="upload-icon">🖼️</div>
+          <p class="upload-label">Drag &amp; drop an image here</p>
+          <p class="upload-sub">or <span class="upload-browse">browse files</span></p>
+          <p class="upload-hint">PNG, JPG, WEBP, GIF — Max 20MB</p>
+          <input type="file" id="resize-file-input" accept="image/*" hidden />
+        </div>
+
+        <div class="tool-controls" id="resize-controls" style="display:none;">
+          <div class="preview-pair">
+            <div class="preview-box">
+              <p class="preview-label">Original</p>
+              <canvas id="resize-preview-original" class="preview-canvas"></canvas>
+              <p class="preview-info" id="resize-info-original"></p>
+            </div>
+            <div class="preview-box">
+              <p class="preview-label">Preview</p>
+              <canvas id="resize-preview-output" class="preview-canvas"></canvas>
+              <p class="preview-info" id="resize-info-output"></p>
+            </div>
+          </div>
+
+          <div class="controls-grid">
+            <div class="control-group">
+              <label class="control-label" for="resize-width">Width (px)</label>
+              <input class="control-input" type="number" id="resize-width" min="1" max="10000" placeholder="e.g. 800" />
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="resize-height">Height (px)</label>
+              <input class="control-input" type="number" id="resize-height" min="1" max="10000" placeholder="e.g. 600" />
+            </div>
+            <div class="control-group full-width">
+              <label class="toggle-label">
+                <input type="checkbox" id="resize-lock-ratio" checked />
+                <span class="toggle-switch"></span>
+                Lock Aspect Ratio
+              </label>
+            </div>
+            <div class="control-group full-width">
+              <label class="control-label" for="resize-format">Output Format</label>
+              <select class="control-input" id="resize-format">
+                <option value="image/jpeg">JPEG</option>
+                <option value="image/png">PNG</option>
+                <option value="image/webp">WEBP</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="action-row">
+            <button class="btn-primary" id="resize-apply-btn">Apply Resize</button>
+            <button class="btn-secondary" id="resize-download-btn" disabled>⬇ Download</button>
+            <button class="btn-ghost" id="resize-reset-btn">Reset</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== PASSPORT TAB ====== -->
+    <section class="tab-section" id="tab-passport">
+      <div class="tool-header">
+        <button class="back-btn" data-tab="home">← Back</button>
+        <h1 class="tool-title">🪪 Passport Photo</h1>
+        <p class="tool-subtitle">Generate print-ready passport photos for any country standard.</p>
+      </div>
+
+      <div class="tool-body">
+        <div class="upload-zone" id="passport-upload-zone" role="button" tabindex="0" aria-label="Upload photo for passport">
+          <div class="upload-icon">📸</div>
+          <p class="upload-label">Drag &amp; drop your photo here</p>
+          <p class="upload-sub">or <span class="upload-browse">browse files</span></p>
+          <p class="upload-hint">Best results with a clear face photo against a plain background</p>
+          <input type="file" id="passport-file-input" accept="image/*" hidden />
+        </div>
+
+        <div class="tool-controls" id="passport-controls" style="display:none;">
+          <div class="controls-grid">
+            <div class="control-group full-width">
+              <label class="control-label" for="passport-size">Passport Size Standard</label>
+              <select class="control-input" id="passport-size">
+                <option value="us">🇺🇸 USA — 2×2 inch (51×51 mm)</option>
+                <option value="uk">🇬🇧 UK — 35×45 mm</option>
+                <option value="eu">🇪🇺 EU / Schengen — 35×45 mm</option>
+                <option value="pk" selected>🇵🇰 Pakistan — 35×45 mm</option>
+                <option value="in">🇮🇳 India — 35×45 mm</option>
+                <option value="ca">🇨🇦 Canada — 50×70 mm</option>
+                <option value="custom">✏️ Custom Size</option>
+              </select>
+            </div>
+            <div id="custom-size-inputs" style="display:none;" class="control-group full-width">
+              <div class="controls-grid" style="margin-top:0">
+                <div class="control-group">
+                  <label class="control-label" for="passport-custom-w">Width (mm)</label>
+                  <input class="control-input" type="number" id="passport-custom-w" value="35" min="10" max="200" />
+                </div>
+                <div class="control-group">
+                  <label class="control-label" for="passport-custom-h">Height (mm)</label>
+                  <input class="control-input" type="number" id="passport-custom-h" value="45" min="10" max="200" />
+                </div>
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="passport-bg">Background Color</label>
+              <select class="control-input" id="passport-bg">
+                <option value="#ffffff">White</option>
+                <option value="#d4e8f7">Light Blue</option>
+                <option value="#f5f5f5">Off-White / Grey</option>
+              </select>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="passport-dpi">Output Quality</label>
+              <select class="control-input" id="passport-dpi">
+                <option value="300">300 DPI (Print Ready)</option>
+                <option value="150">150 DPI (Screen)</option>
+              </select>
+            </div>
+            <div class="control-group full-width">
+              <label class="toggle-label">
+                <input type="checkbox" id="passport-sheet" checked />
+                <span class="toggle-switch"></span>
+                Generate 4×6" print sheet (6 photos)
+              </label>
+            </div>
+          </div>
+
+          <div class="preview-pair">
+            <div class="preview-box">
+              <p class="preview-label">Original</p>
+              <canvas id="passport-preview-original" class="preview-canvas"></canvas>
+            </div>
+            <div class="preview-box">
+              <p class="preview-label">Passport Photo</p>
+              <canvas id="passport-preview-output" class="preview-canvas"></canvas>
+              <p class="preview-info" id="passport-info-output"></p>
+            </div>
+          </div>
+
+          <div class="action-row">
+            <button class="btn-primary" id="passport-generate-btn">Generate Photo</button>
+            <button class="btn-secondary" id="passport-download-btn" disabled>⬇ Download Photo</button>
+            <button class="btn-secondary" id="passport-sheet-download-btn" disabled>🖨 Download Print Sheet</button>
+            <button class="btn-ghost" id="passport-reset-btn">Reset</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== COMPRESS TAB ====== -->
+    <section class="tab-section" id="tab-compress">
+      <div class="tool-header">
+        <button class="back-btn" data-tab="home">← Back</button>
+        <h1 class="tool-title">📦 Compress Images</h1>
+        <p class="tool-subtitle">Reduce file size without visible quality loss. Multiple images → ZIP bundle.</p>
+      </div>
+
+      <div class="tool-body">
+        <div class="upload-zone multi-zone" id="compress-upload-zone" role="button" tabindex="0" aria-label="Upload images to compress">
+          <div class="upload-icon">📦</div>
+          <p class="upload-label">Drag &amp; drop images here</p>
+          <p class="upload-sub">or <span class="upload-browse">browse files</span></p>
+          <p class="upload-hint">PNG, JPG, WEBP — Multiple files allowed</p>
+          <input type="file" id="compress-file-input" accept="image/*" multiple hidden />
+        </div>
+
+        <div class="tool-controls" id="compress-controls" style="display:none;">
+          <div class="controls-grid">
+            <div class="control-group full-width">
+              <label class="control-label" for="compress-mode">Compression Mode</label>
+              <div class="segmented-control" id="compress-mode-selector" role="group" aria-label="Compression mode">
+                <button class="seg-btn active" data-mode="quality" id="mode-quality">Quality %</button>
+                <button class="seg-btn" data-mode="size" id="mode-size">Target Size</button>
+              </div>
+            </div>
+
+            <div class="control-group full-width" id="quality-control">
+              <label class="control-label" for="compress-quality">Quality: <span id="quality-display">75</span>%</label>
+              <input type="range" id="compress-quality" min="10" max="100" value="75" class="range-slider" />
+              <div class="range-labels"><span>Low</span><span>High</span></div>
+            </div>
+
+            <div class="control-group full-width" id="size-control" style="display:none;">
+              <label class="control-label" for="compress-target-size">Target size per image</label>
+              <select class="control-input" id="compress-target-size">
+                <option value="50">50 KB</option>
+                <option value="100" selected>100 KB</option>
+                <option value="200">200 KB</option>
+                <option value="500">500 KB</option>
+                <option value="1000">1 MB</option>
+              </select>
+            </div>
+
+            <div class="control-group full-width">
+              <label class="control-label" for="compress-format">Output Format</label>
+              <select class="control-input" id="compress-format">
+                <option value="keep">Keep Original Format</option>
+                <option value="image/jpeg">JPEG</option>
+                <option value="image/webp">WEBP (best compression)</option>
+                <option value="image/png">PNG</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="file-list" id="compress-file-list"></div>
+
+          <div class="action-row">
+            <button class="btn-primary" id="compress-btn">Compress All</button>
+            <button class="btn-secondary" id="compress-download-btn" disabled>⬇ Download</button>
+            <button class="btn-ghost" id="compress-reset-btn">Reset</button>
+          </div>
+
+          <div id="compress-progress-area" style="display:none;">
+            <div class="progress-bar-wrap">
+              <div class="progress-bar" id="compress-progress-bar"></div>
+            </div>
+            <p class="progress-label" id="compress-progress-label">Processing...</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== PDF TAB ====== -->
+    <section class="tab-section" id="tab-pdf">
+      <div class="tool-header">
+        <button class="back-btn" data-tab="home">← Back</button>
+        <h1 class="tool-title">📄 Images to PDF</h1>
+        <p class="tool-subtitle">Combine images into a single PDF. Drag to reorder pages.</p>
+      </div>
+
+      <div class="tool-body">
+        <div class="upload-zone multi-zone" id="pdf-upload-zone" role="button" tabindex="0" aria-label="Upload images to convert to PDF">
+          <div class="upload-icon">📄</div>
+          <p class="upload-label">Drag &amp; drop images here</p>
+          <p class="upload-sub">or <span class="upload-browse">browse files</span></p>
+          <p class="upload-hint">PNG, JPG, WEBP — Multiple files — Drag below to reorder</p>
+          <input type="file" id="pdf-file-input" accept="image/*" multiple hidden />
+        </div>
+
+        <div class="tool-controls" id="pdf-controls" style="display:none;">
+          <div class="controls-grid">
+            <div class="control-group">
+              <label class="control-label" for="pdf-page-size">Page Size</label>
+              <select class="control-input" id="pdf-page-size">
+                <option value="a4">A4 (210×297 mm)</option>
+                <option value="letter">Letter (8.5×11 inch)</option>
+                <option value="fit">Fit to Image</option>
+              </select>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="pdf-orientation">Orientation</label>
+              <select class="control-input" id="pdf-orientation">
+                <option value="portrait">Portrait</option>
+                <option value="landscape">Landscape</option>
+              </select>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="pdf-margin">Margin</label>
+              <select class="control-input" id="pdf-margin">
+                <option value="0">No margin</option>
+                <option value="10" selected>Small (10mm)</option>
+                <option value="20">Normal (20mm)</option>
+              </select>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="pdf-quality">Image Quality</label>
+              <select class="control-input" id="pdf-quality">
+                <option value="0.95" selected>High</option>
+                <option value="0.75">Medium</option>
+                <option value="0.5">Low</option>
+              </select>
+            </div>
+          </div>
+
+          <p class="drag-hint">↕ Drag images below to reorder pages</p>
+          <div class="pdf-image-list" id="pdf-image-list"></div>
+
+          <div class="action-row">
+            <button class="btn-primary" id="pdf-generate-btn">Generate PDF</button>
+            <button class="btn-secondary" id="pdf-download-btn" disabled>⬇ Download PDF</button>
+            <button class="btn-ghost" id="pdf-reset-btn">Reset</button>
+          </div>
+
+          <div id="pdf-progress-area" style="display:none;">
+            <div class="progress-bar-wrap">
+              <div class="progress-bar" id="pdf-progress-bar"></div>
+            </div>
+            <p class="progress-label" id="pdf-progress-label">Building PDF...</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="site-footer">
+    <p>⚡ <strong>ImageKit</strong> — Free forever. No login. No uploads. All processing in your browser.</p>
+    <p class="footer-sub">Built with ❤ using HTML, CSS &amp; JavaScript</p>
+  </footer>
+
+  <!-- CDN Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.2/dist/browser-image-compression.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+
+  <!-- App Scripts -->
+  <script src="js/app.js"></script>
+  <script src="js/resize.js"></script>
+  <script src="js/passport.js"></script>
+  <script src="js/compress.js"></script>
+  <script src="js/pdf.js"></script>
+</body>
+</html>
